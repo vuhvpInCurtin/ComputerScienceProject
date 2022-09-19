@@ -15,6 +15,9 @@ function SensorVisualization(props) {
         console.log(JSON.parse(e.data));
       });
     }
+    return () => {
+      props.eventSrc.close();
+    };
   }, [props.eventSrc]);
 
   return (

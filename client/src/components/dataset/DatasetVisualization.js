@@ -30,10 +30,6 @@ function DatasetVisualization(props) {
     zip(...obs).subscribe((d) => setValue(d));
   }, [data]);
 
-  useEffect(() => {
-    console.log("value :>> ", value);
-  }, [value]);
-
   return (
     <Row>
       {value.map((v, i) => {

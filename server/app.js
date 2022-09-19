@@ -11,7 +11,9 @@ http
 
     request.on("close", () => {
       closeConnection(response);
-      sub.unsubscribe();
+      if (sub) {
+        sub.unsubscribe();
+      }
       sub = null;
     });
 
