@@ -1,3 +1,4 @@
+require("dotenv").config();
 const http = require("http");
 const sensor = require("./sensor");
 
@@ -31,13 +32,12 @@ http
       response.end();
     }
   })
-  .listen(5000, () => {
-    console.log(`Server running at port 5000`);
+  .listen(process.env.PORT | 5000, () => {
+    console.log(`Server running at port ${process.env.PORT}`);
   });
 
 function sendEvents(response, eventHistory) {
   sub = sensor.read().subscribe((d) => {
-    console.log("d :>> ", d);
     if (!response.finished) {
       const index = eventHistory.length + 1;
       const eventString = `id: ${index}\nevent: dataStream\ndata: {"temperature": ${d.temperature},"humidity": ${d.humidity},"ph": ${

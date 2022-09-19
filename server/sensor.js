@@ -5,11 +5,10 @@ let eventSource = undefined;
 
 function read() {
   if (!eventSource) {
-    eventSource = new EventSource("http://127.0.0.1:8080/stream");
+    eventSource = new EventSource(`http://${process.env.SENSOR_IP}:${process.env.SENSOR_PORT}/stream`);
   }
   return Rx.Observable.create((o) => {
     eventSource.onmessage = (e) => {
-      console.log(e.data, "d in here");
       const d = JSON.parse(e.data);
       o.next(d);
     };
