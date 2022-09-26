@@ -18,7 +18,7 @@ def home():
 @app.route("/stream")
 def read():
   if request.headers.get('accept') == 'text/event-stream':
-    return Response(sensor.read_temperature(), content_type='text/event-stream')
+    return Response(sensor.read_temperature(), mimetype='text/event-stream')
   return render_template("index.html")
 
 if __name__ == '__main__':

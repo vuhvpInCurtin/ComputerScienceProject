@@ -2,31 +2,37 @@ import { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import LineChart from "../chart/LineChart";
 
-function SensorVisualization(props) {
+function SensorVisualization({ eventSrc }) {
   const [data, setData] = useState(undefined);
 
   useEffect(() => {
-    if (props.eventSrc) {
-      props.eventSrc.addEventListener("dataStream", (e) => {
-        console.log(JSON.parse(e.data), "data");
+    if (eventSrc) {
+      eventSrc.onmessage = (e) => {
         setData(JSON.parse(e.data));
-      });
-      props.eventSrc.addEventListener("closedConnection", (e) => {
-        console.log(JSON.parse(e.data));
-      });
+      };
     }
     return () => {
-      props.eventSrc.close();
+      eventSrc.close();
     };
-  }, [props.eventSrc]);
+  }, [eventSrc]);
+
+  const getColumnName = (name) => {
+    let result;
+    Object.keys(data).forEach((k) => {
+      if (k.toLowerCase().includes(name)) {
+        result = k;
+      }
+    });
+    return result;
+  };
 
   return (
     <Row>
       {data &&
         Object.keys(data).map((k, i) => {
-          if (!k.includes("time")) {
+          if (!k.toLowerCase().includes("time")) {
             const d = {
-              time: data["time"],
+              timestamp: data[getColumnName("time")],
               value: data[k],
             };
             return (
