@@ -1,32 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import * as XLSX from "xlsx";
-import SensorVisualization from "../sensor/SensorVisualization";
-import DatasetVisualization from "./DatasetVisualization";
+import Visualization from "../chart/Visualization";
 
-function Dataset(props) {
+function Dataset() {
   const [file, setFile] = useState(undefined);
-  const [data, setData] = useState({});
-  const [header, setHeader] = useState([]);
-  const [rows, setRows] = useState([]);
   const [eventSrc, setEventSrc] = useState(undefined);
+  const [isPaused, setIsPaused] = useState(false);
 
   const handleChange = (event) => {
     setFile(event.target.files[0]);
   };
 
   const uploadFile = () => {
-    // const reader = new FileReader();
-    // reader.onload = (evt) => {
-    //   const bstr = evt.target.result;
-    //   const wb = XLSX.read(bstr, { type: "binary" });
-    //   const wsName = wb.SheetNames[0];
-    //   const ws = wb.Sheets[wsName];
-    //   const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-    //   setHeader(data[0]);
-    //   setRows(data.slice(1));
-    // };
-    // reader.readAsBinaryString(file);
+    setEventSrc(undefined);
     const data = new FormData();
     data.append("file", file);
 
@@ -41,18 +27,29 @@ function Dataset(props) {
       });
   };
 
-  // useEffect(() => {
-  //   const _data = {};
-  //   header.forEach((h, i) => {
-  //     if (!h.toLowerCase().includes("date")) {
-  //       const value = rows.map((row) => {
-  //         return { time: row[0], value: row[i] };
-  //       });
-  //       _data[h] = value;
-  //     }
-  //   });
-  //   setData(_data);
-  // }, [header, rows]);
+  const handleContinue = () => {
+    const url = `http://${process.env.REACT_APP_FLASK_SERVER}/dataset`;
+    const data = new FormData();
+    data.append("button", "Start");
+
+    fetch(url, { method: "POST", body: data }).then((res) => {
+      if (res.status == 200) {
+        setIsPaused(false);
+      }
+    });
+  };
+
+  const handlePause = () => {
+    const url = `http://${process.env.REACT_APP_FLASK_SERVER}/dataset`;
+    const data = new FormData();
+    data.append("button", "Stop");
+
+    fetch(url, { method: "POST", body: data }).then((res) => {
+      if (res.status == 200) {
+        setIsPaused(true);
+      }
+    });
+  };
 
   return (
     <>
@@ -61,11 +58,21 @@ function Dataset(props) {
           <Form.Label>Upload File</Form.Label>
           <Form.Control type="file" onChange={handleChange} />
         </Form.Group>
-        <Button variant="primary" type="button" onClick={uploadFile}>
+        <Button variant="primary" type="button" className="me-3" onClick={uploadFile}>
           Upload
         </Button>
+        {eventSrc && (
+          <Button variant="primary" type="button" className="me-3" onClick={handleContinue} disabled={!isPaused}>
+            Continue
+          </Button>
+        )}
+        {eventSrc && (
+          <Button variant="primary" type="button" onClick={handlePause} disabled={isPaused}>
+            Pause
+          </Button>
+        )}
       </Form>
-      {eventSrc && <SensorVisualization eventSrc={eventSrc} />}
+      {eventSrc && <Visualization eventSrc={eventSrc} />}
     </>
   );
 }

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-function Navigation(props) {
+function Navigation() {
   return (
     <Navbar bg="light" expand="lg">
       <Container>

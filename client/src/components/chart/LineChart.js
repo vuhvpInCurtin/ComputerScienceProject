@@ -32,7 +32,6 @@ function LineChart(props) {
     },
     stroke: {
       curve: "smooth",
-      lineCap: "round",
     },
     title: {
       text: props.label,
@@ -44,8 +43,22 @@ function LineChart(props) {
       labels: {
         datetimeUTC: false,
         format: "hh:mm:ss",
-        formatter: function (value, timestamp, index) {
-          return new Date(value).toLocaleTimeString();
+        formatter: function (value) {
+          const d = new Date(value);
+          const day = d.getDate();
+          const month = d.toLocaleString("default", { month: "long" });
+          const time = d.toLocaleTimeString();
+          return `${day} ${month} ${time}`;
+        },
+      },
+    },
+    yaxis: {
+      min: props.data.min,
+      max: props.data.max,
+      tickAmount: 5,
+      labels: {
+        formatter: function (val) {
+          return val.toFixed(2);
         },
       },
     },
@@ -61,21 +74,22 @@ function LineChart(props) {
     setCurrentTime(time);
   }, [props.data]);
 
-  useEffect(() => {
-    if (currentTime) {
-      ApexCharts.exec(props.label, "addXaxisAnnotation", {
-        x: new Date(currentTime).toLocaleTimeString(),
-        borderColor: "#775DD0",
-        label: {
-          style: {
-            color: "black",
-          },
-          offsetX: 10,
-          text: currentDate,
-        },
-      });
-    }
-  }, [currentDate]);
+  // useEffect(() => {
+  //   console.log("currentTime :>> ", new Date(currentTime).toLocaleDateString());
+  //   if (currentTime) {
+  //     ApexCharts.exec(props.label, "addXaxisAnnotation", {
+  //       x: new Date(currentTime).toLocaleTimeString(),
+  //       borderColor: "#775DD0",
+  //       label: {
+  //         style: {
+  //           color: "black",
+  //         },
+  //         offsetX: 10,
+  //         text: currentDate,
+  //       },
+  //     });
+  //   }
+  // }, [currentDate]);
 
   useEffect(() => {
     ApexCharts.exec(props.label, "updateSeries", [

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import SensorVisualization from "./SensorVisualization";
+import Visualization from "../chart/Visualization";
 
-function Sensor(props) {
+function Sensor() {
   const [eventSrc, setEventSrc] = useState(undefined);
 
   const onSubmit = (e) => {
@@ -34,7 +34,7 @@ function Sensor(props) {
           Close
         </Button>
       </Form>
-      {eventSrc && <SensorVisualization eventSrc={eventSrc} />}
+      {eventSrc && <Visualization eventSrc={eventSrc} />}
     </>
   );
 }
