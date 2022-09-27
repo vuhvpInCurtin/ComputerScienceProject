@@ -44,12 +44,23 @@ def stream_dataset():
 @app.route('/upload', methods = ['POST'])
 def upload_file():
   file = request.files['file']
-  data = pd.read_excel(file)
+  data = None
+  try:
+    data = pd.read_excel(file)
+  except:
+    data = pd.read_csv(file)
+
+  print(data.head())
+
+  if 'Date' in data.columns and 'Time' in data.columns:
+    data['Date and Time'] = pd.to_datetime(data['Date'].apply(str) + ' ' + data['Time'].apply(str), infer_datetime_format=True)
+    del data["Date"], data["Time"]
+  
   headers = list(data.columns.values)
   dataset.create(headers, data)
-  # dataset.stream()
 
-  print(list(data.columns.values))
+  # print(data.head())
+  # dataset.stream2()
  
   return (json.dumps({'success': True}), 200, {'content-type': 'application/json'})
 
