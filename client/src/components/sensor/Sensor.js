@@ -7,7 +7,7 @@ function Sensor(props) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const url = `http://${e.target.ip.value}:${e.target.port.value}/events`;
+    const url = `http://${e.target.ip.value}:${e.target.port.value}/stream-sensor`;
     setEventSrc(new EventSource(url));
   };
 

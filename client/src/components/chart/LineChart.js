@@ -55,9 +55,9 @@ function LineChart(props) {
   });
 
   useEffect(() => {
-    let time = new Date(props.data.time);
+    let time = new Date(props.data.timestamp);
     setData((prev) => [...prev, { x: time, y: props.data.value }]);
-    setCurrentDate(new Date(time).toDateString());
+    setCurrentDate(time.toDateString());
     setCurrentTime(time);
   }, [props.data]);
 
