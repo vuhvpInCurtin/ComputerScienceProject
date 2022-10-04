@@ -15,6 +15,9 @@ function Navigation() {
             <Link className="nav-link" to="/sensor">
               Sensor
             </Link>
+            <Link className="nav-link" to="/form">
+              Form
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

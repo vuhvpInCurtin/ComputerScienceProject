@@ -1,68 +1,46 @@
-from flask import Flask, request, render_template, Response, json
-from sensor import Sensor
-from dataset import Dataset
-from flask_cors import CORS
-import pandas as pd
-import time
+import os
+
+from flask import Flask, render_template
+
+from dataset.dataset import dataset
+from extensions import mongo
+from id.id import id
+from sensor.sensor import sensor
+
+# from flask_cors import CORS
+# from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
-CORS(app)
-sensor = Sensor()
-dataset = Dataset()
+
+app.config['MONGO_URI'] = os.environ.get('MONGO_URI')
+
+mongo.init_app(app)
+
+app.register_blueprint(dataset, url_prefix='/dataset')
+app.register_blueprint(sensor, url_prefix='/sensor')
+app.register_blueprint(id, url_prefix='/id')
 
 @app.route("/", methods=["GET"])
 def index():
-  return render_template("base.html")
+    return render_template("base.html")
 
-@app.route("/sensor", methods=["GET", "POST"])
-def sensor_view():
-  if request.method == 'POST':
-    if request.form['button'] == 'Start':
-      sensor.start()
-    else:
-      sensor.stop()
-  return render_template("sensor.html")
 
-@app.route("/dataset", methods=["GET", "POST"])
-def dataset_view():
-  if request.method == 'POST':
-    if request.form['button'] == 'Start':
-      dataset.start()
-    else:
-      dataset.stop()
-  return render_template("dataset.html")
+# CORS(app)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+# db = SQLAlchemy(app)
+# class Data(db.Model):
+#     id = db.Column(db.String, primary_key=True, default=str(uuid.uuid4().hex))
+#     start = db.Column(db.DateTime, nullable=False)
+#     end = db.Column(db.DateTime, nullable=False)
+#     format = db.Column(db.String(10), nullable=False)
+#     duration = db.Column(db.Integer, nullable=False)
+#     def __repr__(self):
+#         return '<ID {}'.format(self.id)
+# @app.before_first_request
+# def initialize_database():
+#     db.create_all()
 
-@app.route("/stream-sensor")
-def stream_sensor():
-  return Response(sensor.read_temperature(), mimetype='text/event-stream')
-
-@app.route("/stream-dataset")
-def stream_dataset():
-  print("Connect in dataset")
-  return Response(dataset.stream(), mimetype='text/event-stream')
-
-@app.route('/upload', methods = ['POST'])
-def upload_file():
-  file = request.files['file']
-  data = None
-  try:
-    data = pd.read_excel(file)
-  except:
-    data = pd.read_csv(file)
-
-  print(data.head())
-
-  if 'Date' in data.columns and 'Time' in data.columns:
-    data['Date and Time'] = pd.to_datetime(data['Date'].apply(str) + ' ' + data['Time'].apply(str), infer_datetime_format=True)
-    del data["Date"], data["Time"]
-  
-  headers = list(data.columns.values)
-  dataset.create(headers, data)
-
-  # print(data.head())
-  # dataset.stream2()
- 
-  return (json.dumps({'success': True}), 200, {'content-type': 'application/json'})
 
 if __name__ == '__main__':
-  app.run(debug=True, port=8080, host='0.0.0.0')
+    app.run()

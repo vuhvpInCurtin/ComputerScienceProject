@@ -16,12 +16,12 @@ function Dataset() {
     const data = new FormData();
     data.append("file", file);
 
-    const url = `http://${process.env.REACT_APP_FLASK_SERVER}/upload`;
+    const url = `http://${process.env.REACT_APP_FLASK_SERVER}/dataset/upload`;
     fetch(url, { method: "POST", body: data })
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
-          const url = `http://${process.env.REACT_APP_FLASK_SERVER}/stream-dataset`;
+          const url = `http://${process.env.REACT_APP_FLASK_SERVER}/dataset/stream`;
           setEventSrc(new EventSource(url));
         }
       });
@@ -76,5 +76,6 @@ function Dataset() {
     </>
   );
 }
+// "9a19e36032584078a115a0a92869bc8d"
 
 export default Dataset;

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="/sensor" method="POST">
+    ID: <input type="text" name="id"><br>
+    IP: <input type="text" name="ip"><br>
+    Port: <input type="text" name="port"><br>
+</form>
+{% endblock %}
