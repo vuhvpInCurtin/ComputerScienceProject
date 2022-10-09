@@ -35,7 +35,7 @@ class Sensor:
     if self.format == 'second':
       delta = timedelta(seconds=self.duration)
     if self.format == 'minute':
-      delta = timedelta(minutess=self.duration)
+      delta = timedelta(minutes=self.duration)
     if self.format == 'hour':
       delta = timedelta(hours=self.duration)
 
