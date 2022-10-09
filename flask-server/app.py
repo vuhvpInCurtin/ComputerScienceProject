@@ -1,7 +1,3 @@
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
 from flask import Flask, render_template
 
 from dataset.dataset import dataset
@@ -27,6 +23,7 @@ app.register_blueprint(data_bp, url_prefix='/data')
 @app.route("/", methods=["GET"])
 def index():
     return render_template("base.html")
+
 
 if __name__ == '__main__':
     app.run()
