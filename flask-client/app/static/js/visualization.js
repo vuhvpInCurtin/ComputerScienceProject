@@ -1,4 +1,4 @@
-const get_chart_options = (id, label) => {
+const get_chart_options = (id, label, min, max) => {
     const options = {
         series: [{
             data: []
@@ -48,8 +48,8 @@ const get_chart_options = (id, label) => {
             },
         },
         yaxis: {
-            // min: props.data.min,
-            // max: props.data.max,
+            min: min,
+            max: max,
             tickAmount: 5,
             labels: {
                 formatter: (val) => {
@@ -69,7 +69,7 @@ const create_chart_element = (data) => {
     Object.keys(data).map((k, i) => {
         if (!k.toLowerCase().includes("time") && !k.toLowerCase().includes("date")) {
             $('#visualization').append(`<div id='chart-${i + 1}' class='col-6' style='min-height: 400px;'></div>`)
-            var options = get_chart_options(`chart-${i + 1}`, k.trim())
+            var options = get_chart_options(`chart-${i + 1}`, k.trim(), data[k].min, data[k].max)
             var chart = new ApexCharts(document.querySelector(`#chart-${i + 1}`), options);
             chart.render();
         }
