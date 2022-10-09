@@ -10,9 +10,9 @@ datasetM = Dataset()
 def index():
     if request.method == 'POST':
         if request.form['button'] == 'Start':
-            dataset.start()
+            datasetM.start()
         else:
-            dataset.stop()
+            datasetM.stop()
     return render_template("dataset.html")
 
 
@@ -32,7 +32,7 @@ def upload():
         del data["Date"], data["Time"]
 
     headers = list(data.columns.values)
-    dataset.create(headers, data)
+    datasetM.create(headers, data)
 
     return (json.dumps({'success': True}), 200, {'content-type': 'application/json'})
 

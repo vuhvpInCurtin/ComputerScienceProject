@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form class="row g-3" id="data-form">
+    <div class="col-auto">
+        <input type="hidden" id="ip" value="{{server_ip}}">
+        <input type="hidden" id="port" value="{{server_port}}">
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">ID</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" id="data_id">
+            </div>
+        </div>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-3">Submit</button>
+    </div>
+</form>
+
+<div id="visualization" class="row"></div>
+
+{% endblock %}
+
+{% block scriptfiles %}
+
+<script src="{{ url_for('static', filename='js/data.js') }}"></script>
+
+{% endblock %}

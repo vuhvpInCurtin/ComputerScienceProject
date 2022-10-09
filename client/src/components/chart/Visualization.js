@@ -11,6 +11,7 @@ function Visualization({ eventSrc }) {
         if (e.data == "no-content") {
           eventSrc.close();
         } else {
+          console.log('e.data :>> ', JSON.parse(e.data));
           setData(JSON.parse(e.data));
         }
       };

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form class="row g-3" id="upload-form">
+    <div class="col-auto">
+        <input type="hidden" id="ip" value="{{server_ip}}">
+        <input type="hidden" id="port" value="{{server_port}}">
+        <input class="form-control" type="file" id="file">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-3">Upload</button>
+    </div>
+</form>
+
+<div id="visualization" class="row"></div>
+
+{% endblock %}
+
+{% block scriptfiles %}
+
+<script src="{{ url_for('static', filename='js/dataset.js') }}"></script>
+
+{% endblock %}

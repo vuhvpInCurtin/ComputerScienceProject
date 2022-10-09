@@ -18,6 +18,9 @@ function Navigation() {
             <Link className="nav-link" to="/form">
               Form
             </Link>
+            <Link className="nav-link" to="/get-data">
+              Get data
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

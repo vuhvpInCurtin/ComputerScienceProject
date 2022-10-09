@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 
 function CreateForm(props) {
+  const [id, setID] = useState(undefined)
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -12,7 +13,7 @@ function CreateForm(props) {
       duration: e.target.duration.value,
     }
 
-    const url = `http://${process.env.REACT_APP_FLASK_SERVER}/create-form`;
+    const url = `http://${process.env.REACT_APP_FLASK_SERVER}/form/create`;
     fetch(url, {
       method: "POST", headers: {
         'Content-Type': 'application/json'
@@ -20,6 +21,7 @@ function CreateForm(props) {
     })
       .then((res) => res.json())
       .then((res) => {
+        setID(res.id)
         console.log(res, 'res');
       });
   };
@@ -51,6 +53,7 @@ function CreateForm(props) {
           Create
         </Button>
       </Form>
+      {id && <p>{id}</p>}
     </>
   );
 }
