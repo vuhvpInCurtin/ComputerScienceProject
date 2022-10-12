@@ -1,22 +1,22 @@
 from flask import Blueprint, request, render_template, json, Response
-from models.dataset import Dataset
 import pandas as pd
+from ..models.dataset import Dataset
 
-dataset = Blueprint('dataset', __name__)
-datasetM = Dataset()
+dataset_bp = Blueprint('dataset', __name__)
+dataset = Dataset()
 
 
-@dataset.route('/', methods=["GET", "POST"])
+@dataset_bp.route('/', methods=["GET", "POST"])
 def index():
     if request.method == 'POST':
         if request.form['button'] == 'Start':
-            datasetM.start()
+            dataset.start()
         else:
-            datasetM.stop()
+            dataset.stop()
     return render_template("dataset.html")
 
 
-@dataset.route('/upload', methods=['POST'])
+@dataset_bp.route('/upload', methods=['POST'])
 def upload():
     file = request.files['file']
     data = None
@@ -32,11 +32,11 @@ def upload():
         del data["Date"], data["Time"]
 
     headers = list(data.columns.values)
-    datasetM.create(headers, data)
+    dataset.create(headers, data)
 
     return (json.dumps({'success': True}), 200, {'content-type': 'application/json'})
 
 
-@dataset.route("/stream")
+@dataset_bp.route("/stream")
 def stream():
-    return Response(datasetM.stream(), mimetype='text/event-stream')
+    return Response(dataset.stream(), mimetype='text/event-stream')

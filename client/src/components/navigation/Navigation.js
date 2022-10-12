@@ -12,9 +12,6 @@ function Navigation() {
             <Link className="nav-link" to="/dataset">
               Dataset
             </Link>
-            <Link className="nav-link" to="/sensor">
-              Sensor
-            </Link>
             <Link className="nav-link" to="/form">
               Form
             </Link>

@@ -1,8 +1,8 @@
 from datetime import datetime
 from flask import Blueprint, json, render_template, request, redirect, url_for, Response
-from extensions import mongo
+from ..extensions import mongo
 from bson.objectid import ObjectId
-from models.sensor import Sensor
+from ..models.sensor import Sensor
 
 data_bp = Blueprint('data', __name__)
 sensor = Sensor()

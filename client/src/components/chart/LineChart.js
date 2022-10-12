@@ -74,23 +74,6 @@ function LineChart(props) {
     setCurrentTime(time);
   }, [props.data]);
 
-  // useEffect(() => {
-  //   console.log("currentTime :>> ", new Date(currentTime).toLocaleDateString());
-  //   if (currentTime) {
-  //     ApexCharts.exec(props.label, "addXaxisAnnotation", {
-  //       x: new Date(currentTime).toLocaleTimeString(),
-  //       borderColor: "#775DD0",
-  //       label: {
-  //         style: {
-  //           color: "black",
-  //         },
-  //         offsetX: 10,
-  //         text: currentDate,
-  //       },
-  //     });
-  //   }
-  // }, [currentDate]);
-
   useEffect(() => {
     ApexCharts.exec(props.label, "updateSeries", [
       {
