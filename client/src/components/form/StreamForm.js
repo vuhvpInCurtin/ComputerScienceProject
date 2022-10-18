@@ -6,7 +6,7 @@ import DataVisualization from "./DataVisualization";
 let socket;
 
 function StreamForm() {
-    const endPoint = 'localhost:5001';
+    const endPoint = `${process.env.REACT_APP_NODE_IP}:5001`;
 
     socket = io(endPoint, { transports: ["websocket", "polling", "flashsocket"] });
 
