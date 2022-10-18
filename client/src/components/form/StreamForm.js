@@ -42,9 +42,9 @@ function StreamForm() {
                 <Button variant="primary" type="submit" className="me-2">
                     Connect
                 </Button>
-                <Button variant="primary" type="button" onClick={handleClose}>
+                {/* <Button variant="primary" type="button" onClick={handleClose}>
                     Close
-                </Button>
+                </Button> */}
             </Form>
             <DataVisualization socket={socket} />
         </>
