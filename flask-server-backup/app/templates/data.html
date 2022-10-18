@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="/data" method="POST">
+    Start: <input type="date" name="start"><br>
+    End: <input type="date" name="end"><br>
+    Interval format: <select name="format">
+        <option value="second">second</option>
+        <option value="minute">minute</option>
+        <option value="hour">hour</option>
+    </select><br>
+    Interval duration: <input type="text" name="duration"><br>
+    <input type="submit" value="Submit" />
+</form>
+
+{% if data_id %}
+ID: {{ data_id }}
+{% endif %}
+
+{{content}}
+{% endblock %}

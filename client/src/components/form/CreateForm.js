@@ -6,14 +6,15 @@ function CreateForm(props) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
     const data = {
-      start: e.target.start.value,
-      end: e.target.end.value,
+      start: new Date(e.target.start.value + ' 00:00:00').toLocaleString(),
+      end: new Date(e.target.end.value + ' 23:59:59').toLocaleString(),
       format: e.target.format.value,
       duration: e.target.duration.value,
     }
 
-    const url = `http://${process.env.REACT_APP_FLASK_SERVER}/form/create`;
+    const url = `http://${process.env.REACT_APP_NODE_SERVER}/create`;
     fetch(url, {
       method: "POST", headers: {
         'Content-Type': 'application/json'
@@ -21,8 +22,7 @@ function CreateForm(props) {
     })
       .then((res) => res.json())
       .then((res) => {
-        setID(res.id)
-        console.log(res, 'res');
+        setID(res.insertedId)
       });
   };
 

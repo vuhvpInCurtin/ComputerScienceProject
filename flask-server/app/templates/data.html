@@ -2,21 +2,30 @@
 
 {% block content %}
 
-<form action="/data" method="POST">
-    Start: <input type="date" name="start"><br>
-    End: <input type="date" name="end"><br>
-    Interval format: <select name="format">
-        <option value="second">second</option>
-        <option value="minute">minute</option>
-        <option value="hour">hour</option>
-    </select><br>
-    Interval duration: <input type="text" name="duration"><br>
-    <input type="submit" value="Submit" />
+<form class="row g-3" id="data-form" action="/data/id" method="POST">
+    <div class="col-auto">
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">ID</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" id="data_id" name="data_id" value="{{data_id}}">
+            </div>
+        </div>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-3">Submit</button>
+    </div>
 </form>
 
-{% if data_id %}
-ID: {{ data_id }}
+{% if error %}
+{{ error }}
 {% endif %}
 
-{{content}}
+<div id="visualization" class="row"></div>
+
+{% endblock %}
+
+{% block scriptfiles %}
+
+<script src="{{ url_for('static', filename='js/data.js') }}"></script>
+
 {% endblock %}

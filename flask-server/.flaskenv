@@ -1,6 +1,6 @@
 FLASK_APP=run.py
 FLASK_DEBUG=1
-FLASK_RUN_PORT=8080
-FLASK_RUN_HOST=0.0.0.0
+FLASK_RUN_PORT=5000
 
-MONGO_URI=mongodb+srv://vuhvp:aFD6LDNAqO3ygMYo@computerscienceproject.wa7xkfg.mongodb.net/ComputerScienceProjectDB?retryWrites=true&w=majority
+SERVER_IP=127.0.0.1
+SERVER_PORT=8080

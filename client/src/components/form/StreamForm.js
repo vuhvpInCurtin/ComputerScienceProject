@@ -1,28 +1,36 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
-import Visualization from "../chart/Visualization";
+import io from 'socket.io-client';
+import DataVisualization from "./DataVisualization";
+
+let socket;
 
 function StreamForm() {
-    const [eventSrc, setEventSrc] = useState(undefined);
+    const endPoint = 'localhost:5001';
+
+    socket = io(endPoint, { transports: ["websocket", "polling", "flashsocket"] });
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const url = `http://${process.env.REACT_APP_FLASK_SERVER}/form/get-data/${e.target.id.value}`;
-        fetch(url)
-            .then((res) => res.json())
-            .then((res) => {
-                if (res.streaming) {
-                    setEventSrc(new EventSource(url));
-                }
-                else {
-                    alert("ID is not streaming")
-                }
-            });
+        const name = "react-client"
+        const room = e.target.id.value
+        socket.emit('join', { name, room });
     };
 
+
+    useEffect(() => {
+        socket.on('joined', () => {
+            socket.emit('request_stream_from_server');
+        })
+
+        return () => {
+            socket.disconnect()
+        }
+    }, []);
+
     const handleClose = () => {
-        eventSrc.close();
-        setEventSrc(undefined);
+        // eventSrc.close();
+        // setEventSrc(undefined);
     };
 
     return (
@@ -39,7 +47,7 @@ function StreamForm() {
                     Close
                 </Button>
             </Form>
-            {eventSrc && <Visualization eventSrc={eventSrc} />}
+            <DataVisualization socket={socket} />
         </>
     );
 }

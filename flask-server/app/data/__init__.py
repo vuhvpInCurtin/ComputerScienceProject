@@ -1,11 +1,12 @@
-from datetime import datetime
-from flask import Blueprint, json, render_template, request, redirect, url_for, Response
+from flask import Blueprint, request, render_template, Response
 from ..extensions import mongo
+from datetime import datetime
 from bson.objectid import ObjectId
-from ..models.sensor import Sensor
+import os
+# from flask_socketio import SocketIO, emit, send, join_room, leave_room
+
 
 data_bp = Blueprint('data', __name__)
-sensor = Sensor()
 
 
 @data_bp.route('/', methods=["GET", "POST"])
@@ -18,7 +19,7 @@ def index():
         item = data_collection.insert_one(data)
         data_id = str(item.inserted_id)
 
-    return render_template("data.html", data_id=data_id)
+    return render_template("create.html", data_id=data_id)
 
 
 def process_data(form):
@@ -34,20 +35,45 @@ def process_data(form):
     }
 
 
-@data_bp.route("/check/<id>")
-def check(id):
-    data_collection = mongo.db.data
-    item = data_collection.find_one({'_id': ObjectId(id)})
-    if item:
-        sensor.init_range(item['start'], item['end'],
-                          item['format'], item['duration'])
-        return (json.dumps({'success': True}), 200, {'content-type': 'application/json'})
-    else:
-        return (json.dumps({'success': False}), 200, {'content-type': 'application/json'})
+@data_bp.route('/id', methods=["GET", "POST"])
+def fromid():
+    from .. import socketio
+
+    data_id = ''
+    error = ''
+    if request.method == 'POST':
+        form = request.form
+        data_id = form['data_id']
+
+        data_collection = mongo.db.data
+        item = data_collection.find_one({'_id': ObjectId(data_id)})
+
+        if item:
+            print(item, 'item')
+            socketio.emit('request_join', {'data_id': str(item['_id'])})
+        else:
+            error = 'ID not found'
+
+    return render_template("data.html", data_id=data_id, error=error)
 
 
-@data_bp.route("/stream")
+@data_bp.route('/stream',)
 def stream():
-    if request.headers.get('accept') == 'text/event-stream':
-        sensor.start()
-        return Response(sensor.stream_range(), mimetype='text/event-stream')
+    from .. import socketio
+
+    data_id = ''
+    error = ''
+    if request.method == 'POST':
+        form = request.form
+        data_id = form['data_id']
+
+        data_collection = mongo.db.data
+        item = data_collection.find_one({'_id': ObjectId(data_id)})
+
+        if item:
+            print(item, 'item')
+            socketio.emit('request_join', {'data_id': str(item['_id'])})
+        else:
+            error = 'ID not found'
+
+    return render_template("data.html", data_id=data_id, error=error)
