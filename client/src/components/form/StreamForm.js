@@ -29,8 +29,7 @@ function StreamForm() {
     }, []);
 
     const handleClose = () => {
-        // eventSrc.close();
-        // setEventSrc(undefined);
+        socket.disconnect()
     };
 
     return (
