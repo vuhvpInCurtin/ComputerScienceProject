@@ -8,9 +8,7 @@ services:
     ports:
       - 5001:5001
     networks:
-      csp:
-        aliases:
-          - cspserver
+      - csp
 
   csp-client:
     stdin_open: true
@@ -20,7 +18,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - REACT_APP_NODE_IP=cspserver
+      - REACT_APP_NODE_IP=host.docker.internal
     networks:
       - csp
   
