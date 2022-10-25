@@ -12,11 +12,23 @@ function StreamForm() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const name = "react-client"
-        const room = e.target.id.value
-        socket.emit('join', { name, room });
+        const data_id = e.target.id.value
+        const url = `http://${process.env.REACT_APP_NODE_IP}:5001/check-id`;
+        fetch(url, {
+            method: "POST", headers: {
+                'Content-Type': 'application/json'
+            }, body: JSON.stringify({ data_id })
+        }).then((res) => res.json()).then((res) => {
+            if (res) {
+                const name = "react-client"
+                const room = e.target.id.value
+                socket.emit('join', { name, room });
+            }
+            else {
+                console.log('not');
+            }
+        });
     };
-
 
     useEffect(() => {
         socket.on('joined', () => {
@@ -34,7 +46,7 @@ function StreamForm() {
 
     return (
         <>
-            <Form onSubmit={onSubmit} className='w-25'>
+            <Form onSubmit={onSubmit} className='w-25 mb-5'>
                 <Form.Group className="mb-3">
                     <Form.Label>ID</Form.Label>
                     <Form.Control type="text" name="id" />

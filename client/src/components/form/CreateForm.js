@@ -8,8 +8,7 @@ function CreateForm(props) {
     e.preventDefault();
 
     const data = {
-      start: new Date(e.target.start.value + ' 00:00:00').toLocaleString(),
-      end: new Date(e.target.end.value + ' 23:59:59').toLocaleString(),
+      date: new Date(e.target.date.value + ' 23:59:59').toLocaleString(),
       format: e.target.format.value,
       duration: e.target.duration.value,
     }
@@ -30,12 +29,8 @@ function CreateForm(props) {
     <>
       <Form onSubmit={onSubmit} className="w-25">
         <Form.Group className="mb-3">
-          <Form.Label>Start time</Form.Label>
-          <Form.Control type="date" name="start" />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>End time</Form.Label>
-          <Form.Control type="date" name="end" />
+          <Form.Label>Date</Form.Label>
+          <Form.Control type="date" name="date" min={new Date().toJSON().split('T')[0]} />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Interval Format</Form.Label>

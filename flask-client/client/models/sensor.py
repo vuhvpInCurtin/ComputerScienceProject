@@ -34,6 +34,13 @@ class Sensor:
     self.duration = pDuration
     self.currentTime = datetime.strptime(pStartDate, dformat)
 
+  def init_date(self, pDate, pFormat, pDuration):
+    dformat = '%d/%m/%Y, %H:%M:%S'
+    self.date = datetime.strptime(pDate, dformat)
+    self.format = pFormat
+    self.duration = pDuration
+    # self.currentTime = datetime.now()
+
   def stream_range(self):
     delta = None
     if self.format == 'second':
@@ -43,16 +50,24 @@ class Sensor:
     if self.format == 'hour':
       delta = timedelta(hours=self.duration)
 
-    while (self.isContinued and self.currentTime < self.endDate):
+    self.currentTime = datetime.now()
+
+    while (self.isContinued and self.currentTime < self.date):
       temperature = random.randrange(35, 39)
       humidity = random.randrange(46, 50)
       ph = random.randrange(5, 8)
 
       data = Data(temperature, humidity, ph)
       yield "{}".format(data.get_data(self.currentTime))
-      time.sleep(2.0)
+      # time.sleep(2.0)
+      if self.format == 'second':
+        time.sleep(self.duration)
+      if self.format == 'minute':
+        time.sleep(self.duration * 60)
+      if self.format == 'hour':
+        time.sleep(self.duration * 60 * 60)
       self.currentTime += delta
-      if self.currentTime >= self.endDate:
+      if self.currentTime >= self.date:
         self.isContinued = False
         yield "{}".format('no-content')
 

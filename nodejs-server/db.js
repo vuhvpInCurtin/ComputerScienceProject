@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 const Db = 'mongodb+srv://vuhvp:Pringles2022@computerscienceproject.wa7xkfg.mongodb.net/ComputerScienceProjectDB?authSource=admin'
 const client = new MongoClient(Db, {
     useNewUrlParser: true,
@@ -21,4 +21,8 @@ module.exports = {
     getDb: function () {
         return _db;
     },
+
+    getObjectId: function (id) {
+        return new ObjectId(id)
+    }
 };

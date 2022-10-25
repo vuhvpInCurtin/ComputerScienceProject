@@ -17,8 +17,7 @@ def create_sensor():
         print("ID does not exist")
     else:
         print("ID ok")
-        sensor.init_range(item['start'], item['end'],
-                          item['format'], item['duration'])
+        sensor.init_date(item['date'], item['format'], item['duration'])
 
 
 def create_socket():

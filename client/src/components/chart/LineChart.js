@@ -16,7 +16,7 @@ function LineChart(props) {
         enabled: true,
         easing: "linear",
         dynamicAnimation: {
-          speed: 2000,
+          speed: 1000,
         },
       },
       zoom: {

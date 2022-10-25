@@ -3,10 +3,9 @@ const bodyParser = require("body-parser");
 const socketio = require('socket.io');
 const http = require('http');
 const cors = require("cors");
-const moment = require('moment')
 
 const { addUser, removeUser, getUser } = require('./user');
-const { connectToServer, getDb } = require('./db');
+const { connectToServer, getDb, getObjectId } = require('./db');
 
 const PORT = process.env.PORT || 5001;
 const app = express();
@@ -25,6 +24,16 @@ app.get("/", (req, res) => {
     });
 });
 
+app.post("/check-id", (req, res) => {
+    let db = getDb();
+    const body = req.body
+    const data_id = body['data_id']
+    db.collection("data").findOne({ _id: getObjectId(data_id) }, function (err, response) {
+        if (err) throw err;
+        res.json(response);
+    });
+});
+
 app.post("/create", (req, res) => {
     let db = getDb();
     const body = req.body
@@ -37,15 +46,13 @@ app.post("/create", (req, res) => {
 
 const process_data = (form) => {
     return {
-        'start': form['start'],
-        'end': form['end'],
+        'date': form['date'],
         'format': form['format'],
         'duration': +form['duration']
     }
 }
 
 io.on("connection", (socket) => {
-    console.log('connected');
     socket.on('join', ({ name, room }) => {
         const user = addUser(socket.id, name, room);
         socket.emit('joined');
