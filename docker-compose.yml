@@ -8,9 +8,9 @@ services:
     ports:
       - 5001:5001
     networks:
-      cps:
+      csp:
         aliases:
-          - cpsserver
+          - cspserver
 
   csp-client:
     stdin_open: true
@@ -20,10 +20,10 @@ services:
     ports:
       - 3000:3000
     environment:
-      - REACT_APP_NODE_IP=cpsserver
+      - REACT_APP_NODE_IP=cspserver
     networks:
-      - cps
+      - csp
   
   networks:
-    cps:
+    csp:
       driver: bridge
