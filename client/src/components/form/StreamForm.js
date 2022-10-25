@@ -13,7 +13,7 @@ function StreamForm() {
     const onSubmit = (e) => {
         e.preventDefault();
         const data_id = e.target.id.value
-        const url = `http://${process.env.REACT_APP_NODE_IP}:5001/check-id`;
+        const url = `${process.env.REACT_APP_NODE_IP}:5001/check-id`;
         fetch(url, {
             method: "POST", headers: {
                 'Content-Type': 'application/json'
