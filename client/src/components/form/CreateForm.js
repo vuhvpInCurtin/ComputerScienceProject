@@ -13,7 +13,7 @@ function CreateForm(props) {
       duration: e.target.duration.value,
     }
 
-    const url = `${process.env.REACT_APP_NODE_IP}:5001/create`;
+    const url = `http://${process.env.REACT_APP_NODE_IP}:5001/create`;
     fetch(url, {
       method: "POST", headers: {
         'Content-Type': 'application/json'
