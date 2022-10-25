@@ -20,7 +20,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - HOSTNAME=tcp://server-host:5001
+      - REACT_APP_HOSTNAME=tcp://server-host:5001
     networks:
       - csp
   
