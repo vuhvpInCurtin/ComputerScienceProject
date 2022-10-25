@@ -7,10 +7,6 @@ services:
       context: "./nodejs-server"
     ports:
       - 5001:5001
-    networks:
-      csp:
-        aliases:
-          - server-host
 
   client:
     stdin_open: true
@@ -20,10 +16,4 @@ services:
     ports:
       - 3000:3000
     environment:
-      - REACT_APP_HOSTNAME=tcp://server-host:5001
-    networks:
-      - csp
-  
-networks:
-  csp:
-    driver: bridge
+      - REACT_APP_HOSTNAME=http://13.236.73.101:5001
