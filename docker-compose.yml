@@ -5,6 +5,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: "./nodejs-server"
+    container_name: nodeserver
     ports:
       - 5001:5001
     networks:
@@ -15,8 +16,11 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./client
+    container_name: reactclient
     ports:
       - 3000:3000
+    environment:
+      - REACT_APP_NODE_IP=nodeserver
     networks:
       - computer-science-project
 
