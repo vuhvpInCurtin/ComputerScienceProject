@@ -24,6 +24,6 @@ services:
     networks:
       - csp
   
-  networks:
-    csp:
-      driver: bridge
+networks:
+  csp:
+    driver: bridge
