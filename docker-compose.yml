@@ -7,8 +7,6 @@ services:
       context: "./nodejs-server"
     ports:
       - 5001:5001
-    networks:
-      - computer-science-project
 
   csp-client:
     stdin_open: true
@@ -19,9 +17,5 @@ services:
       - 3000:3000
     environment:
       - REACT_APP_NODE_IP=csp-server
-    networks:
-      - computer-science-project
-
-networks:
-  computer-science-project:
-    driver: bridge
+    links: 
+      - csp-server
