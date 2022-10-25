@@ -21,6 +21,8 @@ services:
       - REACT_APP_NODE_IP=host.docker.internal
     networks:
       - csp
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   
 networks:
   csp:
