@@ -15,7 +15,5 @@ services:
       context: ./client
     ports:
       - 3000:3000
-    environment:
-      - REACT_APP_NODE_IP=csp-server
     links: 
       - csp-server
