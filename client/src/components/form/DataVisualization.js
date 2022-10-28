@@ -96,8 +96,8 @@ function DataVisualization(props) {
                     {attributes.map((att, i) => {
                         const d = {
                             timestamp: state.data[timeLabel].value,
-                            value: state.data[att].value + weight[att],
-                            max: state.data[att].max + weight[att],
+                            value: state.data[att].value * weight[att],
+                            max: state.data[att].max * weight[att],
                             min: state.data[att].min,
                         };
                         return (
