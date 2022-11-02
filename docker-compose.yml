@@ -16,4 +16,4 @@ services:
     ports:
       - 3000:3000
     environment:
-      - REACT_APP_HOSTNAME=http://13.236.73.101:5001
+      - REACT_APP_HOSTNAME=http://54.66.186.79:5001
