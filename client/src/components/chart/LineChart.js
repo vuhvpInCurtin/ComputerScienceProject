@@ -42,19 +42,22 @@ function LineChart(props) {
       range: 10,
       labels: {
         datetimeUTC: false,
-        format: "hh:mm:ss",
         formatter: function (value) {
           const d = new Date(value);
-          const day = d.getDate();
-          const month = d.toLocaleString("default", { month: "long" });
           const time = d.toLocaleTimeString();
-          return `${day} ${month} ${time}`;
+          return `${time}`;
         },
       },
     },
     yaxis: {
-      min: props.data.min,
-      max: props.data.max,
+      min: (min) => {
+        min = Math.floor(props.data.min / 5) * 5;
+        return min;
+      },
+      max: (max) => {
+        max = Math.ceil(props.data.max / 5) * 5;
+        return max;
+      },
       tickAmount: 5,
       labels: {
         formatter: function (val) {

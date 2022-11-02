@@ -60,12 +60,22 @@ function DataVisualization(props) {
     };
 
     const handleChange = (value, att) => {
-        console.log(value, att);
         setWeight(prev => ({ ...prev, [att]: +value }))
     }
 
+    const getWeight = (total, current) => {
+        return total += state.data[current].value * weight[current]
+    }
+
+    const getWeightMax = (total, current) => {
+        return total += state.data[current].max * weight[current]
+    }
+
+    const getWeightMin = (total, current) => {
+        return total += state.data[current].min * weight[current]
+    }
+
     useEffect(() => {
-        console.log(Object.keys(weight).length, attributes.length);
         if (attributes.length > 0 && Object.keys(weight).length == attributes.length) {
             setDisabled(false)
         }
@@ -93,13 +103,14 @@ function DataVisualization(props) {
             }
             {start && 
                 <Row>
-                    {attributes.map((att, i) => {
+                    {[...attributes, 'Weight'].map((att, i) => {
                         const d = {
                             timestamp: state.data[timeLabel].value,
-                            value: state.data[att].value * weight[att],
-                            max: state.data[att].max * weight[att],
-                            min: state.data[att].min,
+                            value: att == 'Weight' ? attributes.reduce(getWeight, 0) : state.data[att].value,
+                            max: att == 'Weight' ? attributes.reduce(getWeightMax, 0) : state.data[att].max,
+                            min: att == 'Weight' ? attributes.reduce(getWeightMin, 0) : state.data[att].min,
                         };
+
                         return (
                             <Col md={6} key={i}>
                                 <LineChart label={att} data={d} />
